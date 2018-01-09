@@ -13,20 +13,21 @@
 # - Make two xpt classes? Read and Write?
 # - Where to check whether a file exists before writing?
 ######################################################
-require "xpt/read_data"
-require "xpt/read_meta"
-require "xpt/create_data"
-require "xpt/create_meta"
+require "./xpt/read_data"
+require "./xpt/read_meta"
+require "./xpt/create_data"
+require "./xpt/create_meta"
 
 class Xpt
-  attr_accessor :directory, :file, :datasetLabel, :metadata, :realdata
+  attr_accessor :directory, :file
+  include Create_xpt_data_module
+  include Create_xpt_metadata_module
+  include Read_xpt_data_module
+  include Read_xpt_metadata_module
 
-  def initialize(aName, aFile, dLabel = "empty", mdata = "empty", rdata= "empty")
+  def initialize(aName, aFile)
     @directory = aName
     @file = aFile
-    @datasetLabel = dLabel
-    @metadata = mdata
-    @realdata = rdata
     return self
   end
 
@@ -64,69 +65,41 @@ class Xpt
     return result
   end
 
-  def create_meta
+  def create_meta(datasetLabel,metadata)
     # Check if file exist
-=begin
-    inputFile = self.directory+"/"+self.file
-    if File.exist?( inputFile ) then
-      puts( "Reading metadata from: "+inputFile )
-    else
-      puts( "Eeek! Can't find file! "+inputFile )
-    end
-    puts self.directory
-    puts self.file
-    puts self.datasetLabel
-    puts self.metadata
-=end
-
     puts( "Create XPT file with metadata!")
-    result = create_xpt_metadata(self.directory,self.file,self.datasetLabel,self.metadata)
-
+    result = create_xpt_metadata(self.directory,self.file,datasetLabel,metadata)
     puts "==== File is created ===="
     return result
   end
 
-  def create_data
+  def create_data(datasetLabel,metadata,realdata)
     puts( "Create XPT file with data!" )
-    create_xpt_data(self.directory,self.file,self.datasetLabel, self.metadata,self.realdata)
+    # create_xpt_data(self.directory,self.file,self.datasetLabel, self.metadata,self.realdata)
+    result = create_xpt_data(self.directory,self.file,datasetLabel,metadata,realdata)
     puts "==== File is created ===="
+    return result
   end
-
-
 end
 
+# puts "Creating data"
+# metadata = [[name:"c1",label:"lc 1",type:"char",length:11],
+#             [name:"n1",label:"ln 1",type:"num",length:8]
+# ]
+# rows = [
+#         ["xpt.rb!",1.1],
+#         ["A file",1.1]
+#     ]
 
-exit
+# outputDirectory="C:/Users/ju/Dev/Ruby/gems/xptoutput"
+# filename="testdata"
+# puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
-puts "Creating data"
-metadata = [[name:"c1",label:"lc 1",type:"char",length:11],
-            [name:"n1",label:"ln 1",type:"num",length:8]
-]
-rows = [
-        ["Hi Jakub!",1.1],
-        ["A file",1.1],
-        ["created",-1.1],
-        ["within",2.1],
-        ["ruby.",-2.1],
-        ["It",10.1],
-        ["is",-10.1],
-        ["now",-100.55],
-        ["part",1000.1],
-        ["of",10000.1],
-        ["the",-100000.1],
-        ["xpt",1000000.1],
-        ["gem",1234567.12345],
-        [":)",-1234567.12345]
-    ]
+# # c = Xpt.new(outputDirectory,filename,"dataset label",metadata,rows)
+# c = Xpt.new(outputDirectory,filename)
 
-outputDirectory="C:/Users/ju/Dev/Ruby/gems/xptoutput"
-filename="testdata"
-puts "Set output directory and filename: "+outputDirectory+"-"+filename
+# cres = c.create_data("dataset label",metadata,rows)
 
-c = Xpt.new(outputDirectory,filename,"dataset label",metadata,rows)
-
-cres = c.create_data
-
-puts "Created file: "+outputDirectory+" - "+filename+".xpt"
+# puts "Created file: "+outputDirectory+" - "+filename+".xpt"
 
 
