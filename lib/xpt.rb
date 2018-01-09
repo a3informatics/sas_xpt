@@ -15,6 +15,7 @@
 ######################################################
 require "./xpt/read_data"
 require "./xpt/read_meta"
+require "./xpt/read_meta_supp"
 require "./xpt/create_data"
 require "./xpt/create_meta"
 
@@ -24,6 +25,7 @@ class Xpt
   include Create_xpt_metadata_module
   include Read_xpt_data_module
   include Read_xpt_metadata_module
+  include Read_xpt_metadata_supp_module
 
   def initialize(aName, aFile)
     @directory = aName
@@ -35,49 +37,64 @@ class Xpt
     # Check if file exist
     inputFile = self.directory+"/"+self.file
     if File.exist?( inputFile ) then
-      puts( "Reading metadata from: "+inputFile )
+      STDERR.puts( "Reading metadata from: "+inputFile )
+      result = read_xpt_data(inputFile)
+      STDERR.puts "==== File is read ===="
+      return result
     else
-      puts( "Can't find file! "+inputFile )
+      STDERR.puts( "Can't find file! "+inputFile )
+      return -1
     end
-
-    result = read_xpt_data(inputFile)
-
-    puts "==== File is read ===="
-#    result[:data][0].each do |it|
-#      puts it
-#    end
-
-    return result
   end
 
   def read_meta
     # Check if file exist
     inputFile = self.directory+"/"+self.file
     if File.exist?( inputFile ) then
-      puts( "Reading metadata from: "+inputFile )
+      STDERR.puts( "Reading metadata from: "+inputFile )
     else
-      puts( "Eeek! Can't find file! "+inputFile )
+      STDERR.puts( "Eeek! Can't find file! "+inputFile )
     end
 
     result = read_xpt_metadata(inputFile)
 
-    puts "==== File is read ===="
+    STDERR.puts "==== File is read ===="
     return result
   end
 
+  def read_supp_meta
+    # Check if file exist
+    inputFile = self.directory+"/"+self.file
+    if !File.exist?( inputFile ) then
+      STDERR.puts( "Eeek! Can't find file! "+inputFile )
+      return "(read_supp_meta) Error: File does not exist: "+inputFile
+    end
+    # Check if it is a SUPP dataset as well
+    if !inputFile.include? "supp" then
+      STDERR.puts "This is NOT a supp file. Exiting"
+      return "(read_supp_meta) Error: This is not a supplemental qualifier dataset (SUPP--): "+inputFile
+    end
+
+    result = read_xpt_metadata_supp(inputFile)
+
+    STDERR.puts "==== File is read ===="
+    return result
+  end
+
+
   def create_meta(datasetLabel,metadata)
     # Check if file exist
-    puts( "Create XPT file with metadata!")
+    STDERR.puts( "Create XPT file with metadata!")
     result = create_xpt_metadata(self.directory,self.file,datasetLabel,metadata)
-    puts "==== File is created ===="
+    STDERR.puts "==== File is created ===="
     return result
   end
 
   def create_data(datasetLabel,metadata,realdata)
-    puts( "Create XPT file with data!" )
+    STDERR.puts( "Create XPT file with data!" )
     # create_xpt_data(self.directory,self.file,self.datasetLabel, self.metadata,self.realdata)
     result = create_xpt_data(self.directory,self.file,datasetLabel,metadata,realdata)
-    puts "==== File is created ===="
+    STDERR.puts "==== File is created ===="
     return result
   end
 end

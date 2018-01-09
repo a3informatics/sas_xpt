@@ -13,12 +13,10 @@ module Read_xpt_metadata_module
     def read_xpt_metadata(inputFile)
         file = File.new(inputFile,"r")
 
-        # Read first header
-        #HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000 
+        # Read first header        #HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000 
         firstHeader = file.read(80)
 
-        #Read REAL header info
-        #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
+        #Read REAL header info        #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         sasSymbol = []
         sasSymbol[0] = file.read(8)
         sasSymbol[1] = file.read(8)
@@ -28,21 +26,18 @@ module Read_xpt_metadata_module
         blanks = file.read(24)
         creationTime = file.read(16)
 
-        #Read second REAL header info
-        #ddMMMyy:hh:mm:ss+"        "
+        #Read second REAL header info        #ddMMMyy:hh:mm:ss+"        "
         modifiedTime = file.read(16)
         blanks = file.read(64)
 
-        # Read Member header records
-        #HEADER RECORD*******MEMBER HEADER RECORD!!!!!!!000000000000000001600000000140
+        # Read Member header records        #HEADER RECORD*******MEMBER HEADER RECORD!!!!!!!000000000000000001600000000140
         memHeader = file.read(74)
         varLength = file.read(4)
         blanks = file.read(2)
         #HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000
         memDesc = file.read(80)
 
-        #Read REAL header info
-        #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
+        #Read REAL header info        #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         sasSymbol = file.read(8)
         dsname = file.read(8)
         sasdata = file.read(8)
@@ -51,19 +46,16 @@ module Read_xpt_metadata_module
         blanks = file.read(24)
         creationTime = file.read(16)
 
-        #Read second REAL header info
-        #ddMMMyy:hh:mm:ss+"        "
+        #Read second REAL header info        #ddMMMyy:hh:mm:ss+"        "
         modifiedTime = file.read(16)
         blanks = file.read(16)
         dslabel = file.read(40)
         dstype = file.read(8)
 
-        #Namestr header
-        #HEADER RECORD*******NAMESTR HEADER RECORD!!!!!!!000000xxxx00000000000000000000
+        #Namestr header        #HEADER RECORD*******NAMESTR HEADER RECORD!!!!!!!000000xxxx00000000000000000000
         nameHeader = file.read(54)
         nVars = file.read(4)
         blanks = file.read(22)
-
 
         if (nVars[0] != "0")
             numberOfVariables = nVars.to_i
@@ -151,10 +143,12 @@ module Read_xpt_metadata_module
         results[:variables] = []
         results[:variables] << variables
 
+        results[:status] = ["ok"]
         results[:debug] = []
 
         results[:debug] << {rowLength:rowLength}
         results[:debug] << {totalLength:totalLength}
+
 
         # File metadata read. Rest of file is data.
         return results

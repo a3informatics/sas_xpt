@@ -50,6 +50,30 @@ outputFile.write "\n"
 
 puts "created test output in file:"+outputFileName
 
+###################################################
+# Test for reading supp metadata only
+###################################################
+inputDirectory="./test_xpt_files/"
+theDomain="dm"
+theDomain="suppdm"
+xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+xpt_supp_meta = xpt.read_supp_meta
+
+if (xpt_supp_meta.instance_of? Hash) then
+  outputDirectory="./output/"
+  outputFileName = outputDirectory+theDomain+"_xpt_supp_meta.tsv"
+  outputFile = File.new(outputFileName,"w")
+  xpt_supp_meta[:variables].each do |item|
+      outputFile.write item[:name]
+      # item.each do |map|
+      #     outputFile.write map[:name].to_s+"\t"
+      # end
+  end
+  outputFile.write "\n"
+
+  puts "created test output in file:"+outputFileName
+end
+
 
 ###################################################
 # Test for creating metadata only
