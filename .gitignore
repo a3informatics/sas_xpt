@@ -1,0 +1,4 @@
+*.gem
+lib/output/testdata.xpt
+lib/output/testdata.xpt
+lib/output/testmeta.xpt
