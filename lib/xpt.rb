@@ -15,7 +15,7 @@
 ######################################################
 require "./xpt/read_data"
 require "./xpt/read_meta"
-require "./xpt/read_meta_supp"
+require "./xpt/read_supp_meta"
 require "./xpt/create_data"
 require "./xpt/create_meta"
 
@@ -25,7 +25,7 @@ class Xpt
   include Create_xpt_metadata_module
   include Read_xpt_data_module
   include Read_xpt_metadata_module
-  include Read_xpt_metadata_supp_module
+  include Read_xpt_supp_metadata_module
 
   def initialize(aName, aFile)
     @directory = aName
@@ -75,7 +75,7 @@ class Xpt
       return "(read_supp_meta) Error: This is not a supplemental qualifier dataset (SUPP--): "+inputFile
     end
 
-    result = read_xpt_metadata_supp(inputFile)
+    result = read_xpt_supp_metadata(inputFile)
 
     STDERR.puts "==== File is read ===="
     return result

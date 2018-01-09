@@ -9,8 +9,8 @@
 # Known limitations:
 # - Does not handle VAX/VMS created files
 ######################################################
-module Read_xpt_metadata_supp_module
-    def read_xpt_metadata_supp(inputFile)
+module Read_xpt_supp_metadata_module
+    def read_xpt_supp_metadata(inputFile)
         file = File.new(inputFile,"r")
 
         # Read first header             #HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000
