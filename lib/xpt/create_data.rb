@@ -14,11 +14,12 @@
 #   E.g. ""
 # - No error handling of input metadata
 #   E.g. If characters are too long to fit metadata
+# - Largest numeric value allowed = 4'503'599'627'370'495
 ######################################################
 module Create_xpt_data_module
     def create_xpt_data(path,filename,ds_label,metadata,rows)
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
-        STDERR.puts "Create "+path+filename
+        # STDERR.puts "Create "+path+filename
         file = File.new(path+filename+".xpt","wb")
 
         # Write first header
@@ -196,21 +197,21 @@ module Create_xpt_data_module
                 totalRowLength += rowLength # Set current row length for padding after all variables
         end
 
-        STDERR.puts "totalRowLength: "+totalRowLength.inspect
+        # STDERR.puts "Debug: totalRowLength: "+totalRowLength.inspect
 
     #  Not in create_meta
         padBlank = " "
 
         modden = totalRowLength.modulo(80)
-        STDERR.puts "mod: "+modden.inspect
+        # STDERR.puts "Debug mod: "+modden.inspect
         padLength = (80-modden)
-        STDERR.puts "padLength: "+padLength.inspect
+        # STDERR.puts "Debug padLength: "+padLength.inspect
         if (padLength != 0 && padLength != 80) then
             padString = " "*padLength 
             file.write(padString)
         end
 
-        STDERR.puts "-------------------Observations -------------------"
+        # STDERR.puts "Debug -------------------Observations -------------------"
         ##################################################
         # Write observation header
         file.write("HEADER RECORD*******OBS     HEADER RECORD!!!!!!!000000000000000000000000000000  ")
@@ -232,18 +233,18 @@ module Create_xpt_data_module
         varTypes     = metadata.collect {|it| it[0][:type] }
         rows.each do |row|
             row.each_with_index do |value, index |
-                STDERR.puts "metadata "+index.to_s+":"+varLengths[index].inspect
+                # STDERR.puts "Debug metadata "+index.to_s+":"+varLengths[index].inspect
                 totalRowLength += varLengths[index] # Set current row length for padding after all variables
-                print "value: "
-                puts value.inspect
+                # STDERR.print "Debug: value= "
+                # STDERR.puts value.inspect
                 if (varTypes[index] == "num") then
     #                if (value) then
-                    print "value is: "+value.to_s
+                    # STDERR.print "value is: "+value.to_s
                     binValue = [value].pack("E").unpack("Q>")
-                    print "  binValue: "+binValue.inspect
+                    # STDERR.print "  binValue: "+binValue.inspect
                     if (value == 0) then
                         file.write(zeroValue)
-                        print " ------ writing a zero\n"
+                        # STDERR.print " ------ writing a zero\n"
                     elsif (value) then
                         ################ Put real value
                         isValue = "1" # Real data = 1, missing value = 0
@@ -307,7 +308,8 @@ module Create_xpt_data_module
                           integerLength = 52
                           theIntBin = ("%052b" % value)
                         else
-                          STDERR.puts("Too large number: "+value.to_s)
+                          STDERR.puts("Info: Too large number: "+value.to_s)
+                          return "Warning: Too large number in input data: "+value.to_s
                           exponent = "TOOLARGE"
                           integerLength = 53
                           theIntBin = "TOOLARGE"
@@ -337,7 +339,7 @@ module Create_xpt_data_module
                     else
                         # Put a null value
                         file.write(missingNumeric)
-                        puts "Writing a missing numeric"
+                        STDERR.puts "Info: Writing a missing numeric"
                     end
                 else
                     file.write(value.ljust(varLengths[index]))
@@ -345,17 +347,16 @@ module Create_xpt_data_module
             end
         end
 
-        puts ""
-
         # Pad to 80 bytes
         modden = totalRowLength.modulo(80)
-        STDERR.puts "mod: "+modden.inspect
+        # STDERR.puts "Debug: mod= "+modden.inspect
         padLength = (80-modden)
-        STDERR.puts "padLength: "+padLength.inspect
+        # STDERR.puts "Debug: padLength= "+padLength.inspect
         if (padLength != 0) then
             padString = padBlank*padLength
-            STDERR.puts "pad: "+padString.length.inspect
+            # STDERR.puts "Debug: pad= "+padString.length.inspect
             file.write(padString)
         end
+        return "file created"
     end
 end

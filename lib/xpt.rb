@@ -82,24 +82,3 @@ class Xpt
   end
 end
 
-# puts "Creating data"
-# metadata = [[name:"c1",label:"lc 1",type:"char",length:11],
-#             [name:"n1",label:"ln 1",type:"num",length:8]
-# ]
-# rows = [
-#         ["xpt.rb!",1.1],
-#         ["A file",1.1]
-#     ]
-
-# outputDirectory="C:/Users/ju/Dev/Ruby/gems/xptoutput"
-# filename="testdata"
-# puts "Set output directory and filename: "+outputDirectory+"-"+filename
-
-# # c = Xpt.new(outputDirectory,filename,"dataset label",metadata,rows)
-# c = Xpt.new(outputDirectory,filename)
-
-# cres = c.create_data("dataset label",metadata,rows)
-
-# puts "Created file: "+outputDirectory+" - "+filename+".xpt"
-
-

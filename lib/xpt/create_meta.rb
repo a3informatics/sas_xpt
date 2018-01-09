@@ -19,7 +19,7 @@ module Create_xpt_metadata_module
             return "---------- Dataset name longer than 8 characters ---------"
         end
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
-        STDERR.puts "Create "+path+filename
+        # STDERR.puts "Create "+path+filename
 
         file = File.new(path+filename+".xpt","wb")
 
@@ -45,7 +45,7 @@ module Create_xpt_metadata_module
         # creationTime = file.read(16)
         dt = Time.now.strftime("%d%b%y:%H:%M:%S").upcase
         file.write(dt)
-        STDERR.puts ':'+dt+':'
+        # STDERR.puts ':'+dt+':'
 
         # Create second REAL header info (repeat of date)
         # #ddMMMyy:hh:mm:ss+"        "
@@ -85,7 +85,7 @@ module Create_xpt_metadata_module
         file.write("HEADER RECORD*******NAMESTR HEADER RECORD!!!!!!!000000")
         # Set number of variables to loop
         nVars = metadata.size
-        STDERR.puts "nVars:"+nVars.to_s
+        # STDERR.puts "Debug: nVars="+nVars.to_s
         file.write(nVars.to_s.rjust(4,'0'))
 
         # blanks = file.read(22). Is acutally 20*"0" and 2*" " 
@@ -188,16 +188,16 @@ module Create_xpt_metadata_module
                 totalRowLength += rowLength # Set current row length for padding after all variables
         end
 
-        STDERR.puts "totalRowLength: "+totalRowLength.inspect
+        # STDERR.puts "Debug: totalRowLength= "+totalRowLength.inspect
 
         # Calculate padding to make it into 80 bit chunks
         modden = totalRowLength.modulo(80)
-        STDERR.puts "mod: "+modden.inspect
+        # STDERR.puts "Debug: mod= "+modden.inspect
         padLength = (80-modden)
-        STDERR.puts "padLength: "+padLength.inspect
+        # STDERR.puts "Debug: padLength= "+padLength.inspect
         if (padLength != 0 && padLength != 80) then
             padString = " "*padLength 
-            STDERR.puts "padLength: "+padLength.inspect
+            # STDERR.puts "Debug: padLength= "+padLength.inspect
             file.write(padString)
         end
 
@@ -220,9 +220,9 @@ module Create_xpt_metadata_module
 
         # Pad last time make it a 80 bit chunk
         modden = totalRowLength.modulo(80)
-        STDERR.puts "mod: "+modden.inspect
+        # STDERR.puts "Debug: mod= "+modden.inspect
         padLength = (80-modden)
-        STDERR.puts "padLength: "+padLength.inspect
+        # STDERR.puts "Debug: padLength= "+padLength.inspect
         if (padLength != 0 && padLength != 80) then
             padString = " "*padLength
             file.write(padString)
