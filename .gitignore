@@ -1,2 +1,2 @@
 *.gem
-lib/output/
+lib/output/*.xpt
