@@ -238,16 +238,15 @@ module Create_xpt_data_module
                 # STDERR.print "Debug: value= "
                 # STDERR.puts value.inspect
                 if (varTypes[index] == "num") then
-    #                if (value) then
                     # STDERR.print "value is: "+value.to_s
-                    binValue = [value].pack("E").unpack("Q>")
+                    binValue = [value.abs].pack("E").unpack("Q>")
                     # STDERR.print "  binValue: "+binValue.inspect
                     if (value == 0) then
                         file.write(zeroValue)
                         # STDERR.print " ------ writing a zero\n"
                     elsif (value) then
                         ################ Put real value
-                        isValue = "1" # Real data = 1, missing value = 0
+                        isValue = "1" # Real data = 1, zero = 0
                         # Set sign +/-
                         if value < 0 then
                             theSign = theSign = "1"
@@ -255,7 +254,11 @@ module Create_xpt_data_module
                         else
                             theSign = "0"
                         end
-                        if value < 16 then
+                        if value < 1 then
+                          exponent = "1000000"
+                          integerLength = 0
+                          theIntBin = "" # There is no integer part
+                        elsif value < 16 
                           exponent = "1000001"
                           integerLength = 4
                           theIntBin = ("%04b" % value)
@@ -341,6 +344,7 @@ module Create_xpt_data_module
                         file.write(missingNumeric)
                         STDERR.puts "Info: Writing a missing numeric"
                     end
+                    # STDERR.puts "" # New line for numeric debug
                 else
                     file.write(value.ljust(varLengths[index]))
                 end
