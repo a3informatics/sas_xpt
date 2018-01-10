@@ -307,17 +307,17 @@ module Create_xpt_data_module
                           integerLength = 48
                           theIntBin = ("%048b" % value)
                         elsif value < 4503599627370496
-                          exponent = "1001100"
+                          exponent = "1001101"
                           integerLength = 52
                           theIntBin = ("%052b" % value)
                         else
                           STDERR.puts("Info: Too large number: "+value.to_s)
-                          return "Warning: Too large number in input data: "+value.to_s
-                          exponent = "TOOLARGE"
-                          integerLength = 53
-                          theIntBin = "TOOLARGE"
+                          theSign = "0"
+                          exponent = "0000000"
+                          theIntBin = "0"*56
+                          integerLength = 56
+                          # return "Warning: Too large number in input data: "+value.to_s
                         end
-
                         # Does the value have decimals? Add float part
                         if (value != value.to_i) then
                             theFloatPart = ((value)-value.to_i)
