@@ -1,4 +1,6 @@
 *.gem
+lib/output/*.xpt
+lib/output/*.tsv
 lib/output/testdata.xpt
 lib/output/testmeta.xpt
 lib/output/dm_xpt_data.tsv
