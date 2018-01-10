@@ -256,9 +256,14 @@ module Read_xpt_data_module
                             theValue = "Unknown floating point"
                         end
 
-                    else # Missing value
-                        # Just assign as a missing float
-                        theValue = "."
+                    else # Missing value or zero
+                        # Floatbits all zero -> zero
+                        if floatbits == "00000000000000000000000000000000000000000000000000000000" then
+                            theValue = 0
+                        else
+                            # Just assign as a missing float
+                            theValue = "."
+                        end
                         # Could include error checking. But for now, just skip.
                         # Check that it is only 0 in the floating part for missing values
                         # if (floatbits.include? "1") then
