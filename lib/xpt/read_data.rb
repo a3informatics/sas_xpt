@@ -217,7 +217,7 @@ module Read_xpt_data_module
                     floatbits = file.read(variable[:length]-1).unpack("B*")[0]
 
                     # Is it a real value and not a missing value?
-                    if (exponent[0] == "1") then # Real data
+                    if (floatbits != "00000000000000000000000000000000000000000000000000000000") then # Real data
                         if (exponent == "1000001") then
                             integerLength = 4
                         elsif (exponent == "1000010") then
@@ -257,8 +257,8 @@ module Read_xpt_data_module
                         end
 
                     else # Missing value or zero
-                        # Floatbits all zero -> zero
-                        if floatbits == "00000000000000000000000000000000000000000000000000000000" then
+                        # Exponent all zeros -> zero
+                        if exponent == "0000000" then
                             theValue = 0
                         else
                             # Just assign as a missing float
