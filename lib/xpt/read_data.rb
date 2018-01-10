@@ -257,7 +257,8 @@ module Read_xpt_data_module
                         end
 
                     else # Missing value or zero
-                        # Floatbits all zero -> zero
+                        # Exponent all zeros -> zero
+                        if exponent == "0000000" then
                             theValue = 0
                         else
                             # Just assign as a missing float
