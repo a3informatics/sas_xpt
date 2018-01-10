@@ -254,7 +254,11 @@ module Create_xpt_data_module
                         else
                             theSign = "0"
                         end
-                        if value < 16 then
+                        if value < 1 then
+                          exponent = "1000000"
+                          integerLength = 0
+                          theIntBin = "" # There is no integer part
+                        elsif value < 16 
                           exponent = "1000001"
                           integerLength = 4
                           theIntBin = ("%04b" % value)
