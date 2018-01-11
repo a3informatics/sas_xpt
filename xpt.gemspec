@@ -17,6 +17,13 @@ Gem::Specification.new do |s|
 #  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Xpt!}
 
+  # ADD Environment rules
+
+  s.add_development_dependancy('byebug')
+  s.add_development_dependancy('rspec')
+  s.add_development_dependancy('rspec-rails')
+  s.add_development_dependancy('factory_bot_rails')
+
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
