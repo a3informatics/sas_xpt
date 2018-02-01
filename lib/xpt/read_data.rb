@@ -279,8 +279,7 @@ module Read_xpt_data_module
             firstChar = file.read(1)
             firstVar = true
         end
-        results[:data] = []
-        results[:data] << data
+        results[:data] = data
 
         return results
     end
