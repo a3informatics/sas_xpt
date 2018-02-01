@@ -1,12 +1,12 @@
 ###################################################
 # Test for reading data
 ###################################################
-inputDirectory="./test_xpt_files/"
+inputDirectory="../spec/support/xpt_files/"
 theDomain="dm"
 xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 xpt_data = xpt.read_data
 
-outputDirectory="./output/"
+outputDirectory="../spec/support/output"
 outputFileName = outputDirectory+theDomain+"_xpt_data.tsv"
 outputFile = File.new(outputFileName,"w")
 
@@ -33,12 +33,12 @@ puts "Test data created: "+outputFileName
 ###################################################
 # Test for reading metadata only
 ###################################################
-inputDirectory="./test_xpt_files/"
+inputDirectory="../spec/support/xpt_files/"
 theDomain="dm"
 xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 xpt_meta = xpt.read_meta
 
-outputDirectory="./output/"
+outputDirectory="../spec/support/output"
 outputFileName = outputDirectory+theDomain+"_xpt_meta.tsv"
 outputFile = File.new(outputFileName,"w")
 xpt_meta[:variables].each do |item|
@@ -53,14 +53,14 @@ puts "created test output in file:"+outputFileName
 ###################################################
 # Test for reading supp metadata only
 ###################################################
-inputDirectory="./test_xpt_files/"
+inputDirectory="../spec/support/xpt_files/"
 theDomain="dm"
 theDomain="suppdm"
 xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 xpt_supp_meta = xpt.read_supp_meta
 
 if (xpt_supp_meta.instance_of? Hash) then
-  outputDirectory="./output/"
+outputDirectory="../spec/support/output"
   outputFileName = outputDirectory+theDomain+"_xpt_supp_meta.tsv"
   outputFile = File.new(outputFileName,"w")
   xpt_supp_meta[:variables].each do |item|
@@ -83,7 +83,7 @@ metadata = [[name:"c1",label:"label c1",type:"char",length:11],
             [name:"n1",label:"label n1",type:"num",length:8]
 ]
 
-outputDirectory="./output"
+outputDirectory="../spec/support/output"
 filename="testmeta"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
@@ -108,7 +108,7 @@ rows = [
         ["A file",4503599627370495]
     ]
 
-outputDirectory="./output"
+outputDirectory="../spec/support/output"
 filename="testdata"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 

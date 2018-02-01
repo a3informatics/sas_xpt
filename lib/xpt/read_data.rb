@@ -153,8 +153,7 @@ module Read_xpt_data_module
         end
 
         results = {}
-        results[:variables] = []
-        results[:variables] << variables
+        results[:variables] = variables
 
         results[:metadata] = []
 

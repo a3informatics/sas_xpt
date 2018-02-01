@@ -13,11 +13,11 @@
 # - Make two xpt classes? Read and Write?
 # - Where to check whether a file exists before writing?
 ######################################################
-require "./xpt/read_data"
-require "./xpt/read_meta"
-require "./xpt/read_supp_meta"
-require "./xpt/create_data"
-require "./xpt/create_meta"
+require "xpt/read_data"
+require "xpt/read_meta"
+require "xpt/read_supp_meta"
+require "xpt/create_data"
+require "xpt/create_meta"
 
 class Xpt
   attr_accessor :directory, :file
@@ -37,12 +37,12 @@ class Xpt
     # Check if file exist
     inputFile = self.directory+"/"+self.file
     if File.exist?( inputFile ) then
-      STDERR.puts( "Reading metadata from: "+inputFile )
+      # STDERR.puts( "Reading data from: "+inputFile )
       result = read_xpt_data(inputFile)
-      STDERR.puts "==== File is read ===="
+      # STDERR.puts "==== File is read ===="
       return result
     else
-      STDERR.puts( "Can't find file! "+inputFile )
+      # STDERR.puts( "Can't find file! "+inputFile )
       return -1
     end
   end
@@ -51,15 +51,13 @@ class Xpt
     # Check if file exist
     inputFile = self.directory+"/"+self.file
     if File.exist?( inputFile ) then
-      STDERR.puts( "Reading metadata from: "+inputFile )
+      # STDERR.puts( "Reading metadata from: "+inputFile )
+      result = read_xpt_metadata(inputFile)
+      return result
     else
-      STDERR.puts( "Eeek! Can't find file! "+inputFile )
+      # STDERR.puts( "Eeek! Can't find file! "+inputFile )
+      return -1
     end
-
-    result = read_xpt_metadata(inputFile)
-
-    STDERR.puts "==== File is read ===="
-    return result
   end
 
   def read_supp_meta
@@ -98,4 +96,3 @@ class Xpt
     return result
   end
 end
-
