@@ -64,19 +64,21 @@ class Xpt
     # Check if file exist
     inputFile = self.directory+"/"+self.file
     if !File.exist?( inputFile ) then
-      STDERR.puts( "Eeek! Can't find file! "+inputFile )
-      return "(read_supp_meta) Error: File does not exist: "+inputFile
+      # return "(read_supp_meta) Error: File does not exist: "+inputFile
+      result = {}
+      result[:status] = -1
+      result[:error] = "Input directory/file does not exist"
+      return result
     end
-    # Check if it is a SUPP dataset as well
-    if !inputFile.include? "supp" then
-      STDERR.puts "This is NOT a supp file. Exiting"
-      return "(read_supp_meta) Error: This is not a supplemental qualifier dataset (SUPP--): "+inputFile
+      result = read_xpt_supp_metadata(inputFile)
+      return result
+    else
+      # return "(read_supp_meta) Error: This is not a supplemental qualifier dataset (SUPP--): "+inputFile
+      result = {}
+      result[:status] = -2
+      result[:error] = "Incorrect naming of file"
+      return result
     end
-
-    result = read_xpt_supp_metadata(inputFile)
-
-    STDERR.puts "==== File is read ===="
-    return result
   end
 
 

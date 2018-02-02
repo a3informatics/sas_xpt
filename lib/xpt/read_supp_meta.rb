@@ -172,15 +172,15 @@ module Read_xpt_supp_metadata_module
 
         # Continue to read until end of file
         readSoFar = 0
-        i = 0
+        # i = 0
         until file.eof?
-          i += 1
+          # i += 1
           stuff = file.read(1)
-          readSoFar += 1
+          # readSoFar += 1
         end
-        STDERR.puts "(Read_meta_supp) Info: read characters until eof="+readSoFar.to_s
+        # STDERR.puts "(Read_meta_supp) Info: read characters until eof="+readSoFar.to_s
 
-        # puts suppVars
+        # STDERR.puts suppVars
         results = {}
         results[:variables] = suppVars.collect {|key, value| {name:key,label:value} }
 

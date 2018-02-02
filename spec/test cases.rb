@@ -54,7 +54,6 @@ puts "created test output in file:"+outputFileName
 # Test for reading supp metadata only
 ###################################################
 inputDirectory="../spec/support/xpt_files/"
-theDomain="dm"
 theDomain="suppdm"
 xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 xpt_supp_meta = xpt.read_supp_meta
