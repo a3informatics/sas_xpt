@@ -250,7 +250,7 @@ module Read_xpt_data_module
                         if (integerLength != -1) then
                             theIntegerBinary = floatbits[0..integerLength-1]
                             theDecimalBinary = floatbits[integerLength..-1]
-                            theValue = ((floatbits.to_i(2) * (1.0/(1 << theDecimalBinary.length)))*sign).to_s
+                            theValue = ((floatbits.to_i(2) * (1.0/(1 << theDecimalBinary.length)))*sign)
                         else
                             theValue = "Unknown floating point"
                         end

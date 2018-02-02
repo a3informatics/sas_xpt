@@ -3,6 +3,10 @@ require "spec_helper"
 describe Xpt do
   
   # Reports error on non-existing directory
+    context "expect gem to read xpt data ------------------------" do
+        it 'as specified' do
+        end
+    end
     context "when setting non-existing directory" do
         it 'returns error' do
             inputDirectory="./support/sdf"
@@ -39,7 +43,7 @@ describe Xpt do
             expect(xpt.file).to eq(theDomain+".xpt")
         end
 
-        it 'reads xpt file and variables are the same and the same number of rows' do
+        it 'reads xpt file and returns the correct variables and content on the last row' do
             result = xpt.read_data
 
             correct_variables =["STUDYID","DOMAIN","USUBJID","SUBJID","RFSTDTC","RFENDTC","RFXSTDTC", "RFXENDTC",
@@ -51,9 +55,14 @@ describe Xpt do
                 read_variables << map[:name]
             end
 
-            # expect(result[:variables][0]).to be correct_variables[0]
+            # Check that it is the right variables
             expect(read_variables).to eq(correct_variables)
+            # Check that the number of rows are correct
             expect(result[:data].size).to equal 306
+            # On last row, check USUBJID (char), AGE (num) and the last variable in the dataset DMDY
+            expect(result[:data][-1]['USUBJID']).to eq("01-718-1427")
+            expect(result[:data][-1]['AGE']).to eq(74.0)
+            expect(result[:data][-1]['DMDY']).to eq(-4.0)
         end
     end
 end
