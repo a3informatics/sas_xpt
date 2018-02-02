@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name               = "Xpt"
-  s.version            = "0.2.0"
+  s.version            = "0.2.1"
   s.default_executable = "Xpt"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -19,17 +19,17 @@ Gem::Specification.new do |s|
 
   # ADD Environment rules
 
-  s.add_development_dependancy('byebug')
-  s.add_development_dependancy('rspec')
-  s.add_development_dependancy('rspec-rails')
-  s.add_development_dependancy('factory_bot_rails')
+  # s.add_development_dependancy('byebug')
+  # s.add_development_dependancy('rspec')
+  # s.add_development_dependancy('rspec-rails')
+  # s.add_development_dependancy('factory_bot_rails')
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
+  # if s.respond_to? :specification_version then
+  #   s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-    else
-    end
-  else
-  end
+  #   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+  #   else
+  #   end
+  # else
+  # end
 end
