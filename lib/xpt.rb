@@ -70,6 +70,8 @@ class Xpt
       result[:error] = "Input directory/file does not exist"
       return result
     end
+    # Check if it is named as a SUPP dataset as well
+    if (self.file =~ /supp..\.xpt/) then
       result = read_xpt_supp_metadata(inputFile)
       return result
     else
