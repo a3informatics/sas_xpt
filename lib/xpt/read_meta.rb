@@ -140,15 +140,12 @@ module Read_xpt_metadata_module
         end
 
         results = {}
-        results[:variables] = []
-        results[:variables] << variables
+        results[:variables] = variables
 
         results[:status] = ["ok"]
-        results[:debug] = []
-
-        results[:debug] << {rowLength:rowLength}
-        results[:debug] << {totalLength:totalLength}
-
+        # results[:debug] = []
+        # results[:debug] << {rowLength:rowLength}
+        # results[:debug] << {totalLength:totalLength}
 
         # File metadata read. Rest of file is data.
         return results
