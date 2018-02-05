@@ -15,13 +15,13 @@
 ######################################################
 module Create_xpt_metadata_module
     def create_xpt_metadata(path,filename,ds_label,metadata)
-        if filename.length > 8 then
+        if filename.chomp(".xpt").length > 8 then
             return "---------- Dataset name longer than 8 characters ---------"
         end
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
         # STDERR.puts "Create "+path+filename
 
-        file = File.new(path+filename+".xpt","wb")
+        file = File.new(path+filename,"wb")
 
         # Create header
         str = "HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000"
@@ -63,7 +63,7 @@ module Create_xpt_metadata_module
         # #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         file.write("  ")  # Don't really now what this is used for
         file.write("SAS     ")  # Static it is SAS generated
-        file.write(filename.ljust(8))
+        file.write(filename.chomp(".xpt").ljust(8))
         file.write("SASDATA ")  # Static header info
         file.write("9.4     ")  # Static SAS version number
         file.write("X64_8PRO")  # Static OS version
