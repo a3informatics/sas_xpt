@@ -184,9 +184,9 @@ module Read_xpt_supp_metadata_module
         results = {}
         results[:variables] = suppVars.collect {|key, value| {name:key,label:value} }
 
-        results[:domain] = [theDomain]
+        results[:domain] = theDomain
 
-        results[:status] = ["ok"]
+        results[:status] = "ok"
 
         # File metadata read. Rest of file is data.
         return results

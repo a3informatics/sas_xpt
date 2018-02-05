@@ -14,7 +14,7 @@ describe Xpt do
             xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 
             result = xpt.read_data
-            expect(result).to eq(-1)
+            expect(result[:status]).to eq(-1)
         end
     end
 
@@ -26,7 +26,7 @@ describe Xpt do
 
         it 'returns error' do
             result = xpt.read_data
-            expect(result).to eq(-1)
+            expect(result[:status]).to eq(-1)
         end
     end
 
