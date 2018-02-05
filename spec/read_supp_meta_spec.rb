@@ -55,15 +55,15 @@ describe Xpt do
 
   # Correct file
     context "when setting existing file" do
-        inputDirectory="./spec/support/xpt_files"
+        inputDirectory="./spec/support/xpt_files" # Intentionally without ending "/", should be added by class
         theDomain="suppdm"
         xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 
         it 'sets input directory' do
-            expect(xpt.directory).to eq(inputDirectory)
+            expect(xpt.directory).to eq(inputDirectory+"/")
         end
         it 'sets input filename '+theDomain do
-            expect(xpt.file).to eq(theDomain+".xpt")
+            expect(xpt.filename).to eq(theDomain+".xpt")
         end
 
         it 'reads xpt file metadata and returns the correct variables' do
