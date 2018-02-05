@@ -27,47 +27,58 @@ class Xpt
   include Read_xpt_metadata_module
   include Read_xpt_supp_metadata_module
 
-  def initialize(aPath, aFilename)
+  def initialize(aPath, aDomain)
     @directory = File.join(aPath,"") # This makes sure that the directory always ends with "/"
-    @filename = aFilename
+    @filename = aDomain+".xpt"
     return self
   end
 
   def read_data
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_data) Input directory does not exist")
     # Check if file exist
-    inputFile = self.directory+self.filename
-    if File.exist?( inputFile ) then
-      result = read_xpt_data(inputFile)
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_data) Input file does not exist")
+    # Read file
     else
-      result = createError(-1,"(read data) Input directory/file does not exist")
+      result = read_xpt_data(self.directory+self.filename)
     end
     return result
   end
 
   def read_meta
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_meta) Input directory does not exist")
+
     # Check if file exist
-    inputFile = self.directory+self.filename
-    if File.exist?( inputFile ) then
-      result = read_xpt_metadata(inputFile)
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_meta) Input file does not exist")
+
+    # Read file
     else
-      result = createError(-1,"(read_meta) Input directory/file does not exist")
+      result = read_xpt_metadata(self.directory+self.filename)
     end
     return result
   end
 
   def read_supp_meta
-    inputFile = self.directory+self.filename
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_supp_meta) Input directory does not exist")
+
     # Check if file exist
-    if !File.exist?(inputFile) then
-      result = createError(-1,"(Read_supp_meta) Input directory/file does not exist")
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_supp_meta) Input file does not exist")
 
     # Check if it is named as a SUPPxx dataset as well
-    elsif (self.filename =~ /supp..\.xpt/) then
-      result = read_xpt_supp_metadata(inputFile)
+    elsif self.filename !~ /^supp..\.xpt$/
+      result = createError(-3,"(Xpt read_supp_meta) Incorrect naming of SUPP-- file")
 
-    # Check if it is named as a SUPPxx dataset as well
+    # Read file
     else
-      result = createError(-2,"(Read_supp_meta) Incorrect naming of file")
+      result = read_xpt_supp_metadata(self.directory+self.filename)
     end
     return result
   end
@@ -95,10 +106,3 @@ class Xpt
     return result
   end
 end
-
-inputDirectory="../spec/support/xpt_files"
-theDomain="suppae"
-xpt = Xpt.new(inputDirectory,theDomain+".xpt")
-xpt_supp_meta = xpt.read_supp_meta
-
-p xpt_supp_meta

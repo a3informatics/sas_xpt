@@ -2,64 +2,89 @@ require "spec_helper"
 
 describe Xpt do
   
-  # Reports error on non-existing directory
     context "expect gem to read xpt with supplemental data as metadata ------------------------" do
         it 'as specified' do
         end
     end
+    # Reports error on non-existing directory
     context "when setting non-existing directory" do
-        it 'returns error' do
-            inputDirectory="./support/sdf"
-            theDomain="dm"
-            xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+        inputDirectory="./support/sdf"
+        theDomain="dm"
+        xpt = Xpt.new(inputDirectory,theDomain)
 
+        it 'sets input directory '+inputDirectory do
+            expect(xpt.directory).to eq(inputDirectory+"/")
+        end
+        it 'sets input filename '+theDomain+".xpt" do
+            expect(xpt.filename).to eq(theDomain+".xpt")
+        end
+        it 'returns error' do
             result = xpt.read_supp_meta
             expect(result[:status]).to eq(-1)
         end
     end
 
-  # Reports error on non-existing file
+    # Reports error on non-existing file
     context "when setting non-existing file" do
-        inputDirectory="./support/xpt_files"
+        inputDirectory="./spec/support/xpt_files"
         theDomain="doesnotexist"
-        xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+        xpt = Xpt.new(inputDirectory,theDomain)
 
+        it 'sets input directory '+inputDirectory do
+            expect(xpt.directory).to eq(inputDirectory+"/")
+        end
+        it 'sets input filename '+theDomain+".xpt" do
+            expect(xpt.filename).to eq(theDomain+".xpt")
+        end
         it 'returns error' do
             result = xpt.read_supp_meta
-            expect(result[:status]).to eq(-1)
+            expect(result[:status]).to eq(-2)
         end
     end
 
-  # Reports error if file does not start with "SUPP"
-    context "when setting incorrect file name (i.e. not SUPP--)" do
+    # Reports error if filename does not match "SUPP--"
+    context "when setting incorrect file name supdm (i.e. not SUPP--)" do
         inputDirectory="./spec/support/xpt_files"
         theDomain="supdm"
-        xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+        xpt = Xpt.new(inputDirectory,theDomain)
 
-        it 'returns error for supdm' do
-            result = xpt.read_supp_meta
-            expect(result[:status]).to eq(-2)
+        it 'sets input directory '+inputDirectory do
+            expect(xpt.directory).to eq(inputDirectory+"/")
         end
-
-        inputDirectory="./spec/support/xpt_files"
-        theDomain="supdm"
-        xpt = Xpt.new(inputDirectory,theDomain+".xpt")
-
-        it 'returns error for suppdmm' do
-            result = xpt.read_supp_meta
-            expect(result[:status]).to eq(-2)
+        it 'sets input filename '+theDomain do
+            expect(xpt.filename).to eq(theDomain+".xpt")
         end
-
+        it 'returns error for '+theDomain do
+            result = xpt.read_supp_meta
+            expect(result[:status]).to eq(-3)
+        end
     end
 
+    # Reports error if filename does not match "SUPP--"
+    context "when setting incorrect file name supdm (i.e. not SUPP--)" do
+        inputDirectory="./spec/support/xpt_files"
+        theDomain="suppdmm"
+        xpt = Xpt.new(inputDirectory,theDomain)
 
-  # Correct file
+        it 'sets input directory '+inputDirectory do
+            expect(xpt.directory).to eq(inputDirectory+"/")
+        end
+        it 'sets input filename '+theDomain do
+            expect(xpt.filename).to eq(theDomain+".xpt")
+        end
+        it 'returns error for '+theDomain do
+            result = xpt.read_supp_meta
+            expect(result[:status]).to eq(-3)
+        end
+    end
+
+    # Correct file
     context "when setting existing file" do
         inputDirectory="./spec/support/xpt_files" # Intentionally without ending "/", should be added by class
         theDomain="suppdm"
-        xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+        xpt = Xpt.new(inputDirectory,theDomain)
 
-        it 'sets input directory' do
+        it 'sets input directory '+inputDirectory do
             expect(xpt.directory).to eq(inputDirectory+"/")
         end
         it 'sets input filename '+theDomain do
