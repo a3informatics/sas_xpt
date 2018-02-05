@@ -20,83 +20,89 @@ require "xpt/create_data"
 require "xpt/create_meta"
 
 class Xpt
-  attr_accessor :directory, :file
+  attr_accessor :directory, :filename
   include Create_xpt_data_module
   include Create_xpt_metadata_module
   include Read_xpt_data_module
   include Read_xpt_metadata_module
   include Read_xpt_supp_metadata_module
 
-  def initialize(aName, aFile)
-    @directory = aName
-    @file = aFile
+  def initialize(aPath, aDomain)
+    @directory = File.join(aPath,"") # This makes sure that the directory always ends with "/"
+    @filename = aDomain+".xpt"
     return self
   end
 
   def read_data
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_data) Input directory does not exist")
     # Check if file exist
-    inputFile = self.directory+"/"+self.file
-    if File.exist?( inputFile ) then
-      # STDERR.puts( "Reading data from: "+inputFile )
-      result = read_xpt_data(inputFile)
-      # STDERR.puts "==== File is read ===="
-      return result
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_data) Input file does not exist")
+    # Read file
     else
-      # STDERR.puts( "Can't find file! "+inputFile )
-      return -1
+      result = read_xpt_data(self.directory+self.filename)
     end
+    return result
   end
 
   def read_meta
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_meta) Input directory does not exist")
+
     # Check if file exist
-    inputFile = self.directory+"/"+self.file
-    if File.exist?( inputFile ) then
-      # STDERR.puts( "Reading metadata from: "+inputFile )
-      result = read_xpt_metadata(inputFile)
-      return result
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_meta) Input file does not exist")
+
+    # Read file
     else
-      # STDERR.puts( "Eeek! Can't find file! "+inputFile )
-      return -1
+      result = read_xpt_metadata(self.directory+self.filename)
     end
+    return result
   end
 
   def read_supp_meta
-    # Check if file exist
-    inputFile = self.directory+"/"+self.file
-    if !File.exist?( inputFile ) then
-      # return "(read_supp_meta) Error: File does not exist: "+inputFile
-      result = {}
-      result[:status] = -1
-      result[:error] = "Input directory/file does not exist"
-      return result
-    end
-    # Check if it is named as a SUPP dataset as well
-    if (self.file =~ /supp..\.xpt/) then
-      result = read_xpt_supp_metadata(inputFile)
-      return result
-    else
-      # return "(read_supp_meta) Error: This is not a supplemental qualifier dataset (SUPP--): "+inputFile
-      result = {}
-      result[:status] = -2
-      result[:error] = "Incorrect naming of file"
-      return result
-    end
-  end
+    # Check if directory exist
+    if !File.exist?(self.directory) then
+      result = createError(-1,"(Xpt read_supp_meta) Input directory does not exist")
 
+    # Check if file exist
+    elsif !File.exist?(self.directory+self.filename) then
+      result = createError(-2,"(Xpt read_supp_meta) Input file does not exist")
+
+    # Check if it is named as a SUPPxx dataset as well
+    elsif self.filename !~ /^supp..\.xpt$/
+      result = createError(-3,"(Xpt read_supp_meta) Incorrect naming of SUPP-- file")
+
+    # Read file
+    else
+      result = read_xpt_supp_metadata(self.directory+self.filename)
+    end
+    return result
+  end
 
   def create_meta(datasetLabel,metadata)
     # Check if file exist
     STDERR.puts( "Create XPT file with metadata!")
-    result = create_xpt_metadata(self.directory,self.file,datasetLabel,metadata)
+    result = create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
     STDERR.puts "==== File is created ===="
     return result
   end
 
   def create_data(datasetLabel,metadata,realdata)
     STDERR.puts( "Create XPT file with data!" )
-    # create_xpt_data(self.directory,self.file,self.datasetLabel, self.metadata,self.realdata)
-    result = create_xpt_data(self.directory,self.file,datasetLabel,metadata,realdata)
+    # create_xpt_data(self.directory,self.filename,self.datasetLabel, self.metadata,self.realdata)
+    result = create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
     STDERR.puts "==== File is created ===="
+    return result
+  end
+
+  def createError(errorNo, errorText)
+    result = {}
+    result[:status] = errorNo
+    result[:error] = errorText
     return result
   end
 end

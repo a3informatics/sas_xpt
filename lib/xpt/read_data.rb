@@ -280,6 +280,7 @@ module Read_xpt_data_module
             firstVar = true
         end
         results[:data] = data
+        results[:status] = 1
 
         return results
     end

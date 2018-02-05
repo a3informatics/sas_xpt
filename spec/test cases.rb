@@ -1,9 +1,9 @@
 ###################################################
 # Test for reading data
 ###################################################
-inputDirectory="../spec/support/xpt_files/"
+inputDirectory="../spec/support/xpt_files"
 theDomain="dm"
-xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+xpt = Xpt.new(inputDirectory,theDomain)
 xpt_data = xpt.read_data
 
 outputDirectory="../spec/support/output"
@@ -33,9 +33,9 @@ puts "Test data created: "+outputFileName
 ###################################################
 # Test for reading metadata only
 ###################################################
-inputDirectory="../spec/support/xpt_files/"
+inputDirectory="../spec/support/xpt_files"
 theDomain="dm"
-xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+xpt = Xpt.new(inputDirectory,theDomain)
 xpt_meta = xpt.read_meta
 
 outputDirectory="../spec/support/output"
@@ -53,9 +53,9 @@ puts "created test output in file:"+outputFileName
 ###################################################
 # Test for reading supp metadata only
 ###################################################
-inputDirectory="../spec/support/xpt_files/"
+inputDirectory="../spec/support/xpt_files"
 theDomain="suppdm"
-xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+xpt = Xpt.new(inputDirectory,theDomain)
 xpt_supp_meta = xpt.read_supp_meta
 
 if (xpt_supp_meta.instance_of? Hash) then
