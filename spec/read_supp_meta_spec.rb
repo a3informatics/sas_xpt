@@ -33,13 +33,23 @@ describe Xpt do
   # Reports error if file does not start with "SUPP"
     context "when setting incorrect file name (i.e. not SUPP--)" do
         inputDirectory="./spec/support/xpt_files"
-        theDomain="suppdm"
+        theDomain="supdm"
         xpt = Xpt.new(inputDirectory,theDomain+".xpt")
 
-        it 'returns error' do
+        it 'returns error for supdm' do
             result = xpt.read_supp_meta
             expect(result[:status]).to eq(-2)
         end
+
+        inputDirectory="./spec/support/xpt_files"
+        theDomain="supdm"
+        xpt = Xpt.new(inputDirectory,theDomain+".xpt")
+
+        it 'returns error for suppdmm' do
+            result = xpt.read_supp_meta
+            expect(result[:status]).to eq(-2)
+        end
+
     end
 
 
@@ -52,7 +62,7 @@ describe Xpt do
         it 'sets input directory' do
             expect(xpt.directory).to eq(inputDirectory)
         end
-        it 'sets input filename' do
+        it 'sets input filename '+theDomain do
             expect(xpt.file).to eq(theDomain+".xpt")
         end
 
@@ -64,7 +74,6 @@ describe Xpt do
             read_variables = []
             result[:variables].each do |map|
                 read_variables << map[:name]
-                # read_variables << map["name"]
             end
 
             # Check that it is the right variables
