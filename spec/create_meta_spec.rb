@@ -1,7 +1,31 @@
 require "spec_helper"
 
+# For some reason this test cannot be within the spec
+module BinaryHelper
+    def check_content(generated_file, correct_file)
+        created_file_content = File.open(generated_file, 'rb') { |f| f.read }
+        correct_file_content = File.open(correct_file, 'rb') { |f| f.read }
+        startPosition = 0
+        stopPosition = 143
+        # it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' before date of creation1' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+        startPosition = 176
+        stopPosition = 463
+        # it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' after date of creation1 and before date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+        startPosition = 496
+        stopPosition = -1
+        # it 'has the same binary content on position '+startPosition.to_s+'-(end) after date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+    end
+end
+
 describe Xpt do
-  
+    include BinaryHelper
+
     context "expect gem to create xpt file with metadata only ------------------------" do
         it 'as specified' do
         end
@@ -14,6 +38,7 @@ describe Xpt do
 
         # Fake metadata to send
         metadata = []
+        
         it 'sets input directory '+outputDirectory do
             expect(xpt.directory).to eq(outputDirectory+"/")
         end
@@ -73,7 +98,7 @@ describe Xpt do
     end
 
     # Creates file with metadata
-    context "when creating a file with metadata" do
+     context "when creating a file with metadata" do
         outputDirectory="./spec/output"
         theDomain="testmeta"
         xpt = Xpt.new(outputDirectory,theDomain)
@@ -102,4 +127,12 @@ describe Xpt do
             expect(File.exist?(xpt.directory+xpt.filename)).to eq(true)
         end
     end
+
+    context "the created file " do
+        it "binary compare should be the same (except dates)" do
+            check_content("./spec/output/testmeta.xpt", "./spec/support/compare_files/testmeta_correct.xpt")
+            # check_content("./spec/output/testmeta.xpt", "./spec/support/compare_files/testdata_correct.xpt")
+        end
+    end
+
 end

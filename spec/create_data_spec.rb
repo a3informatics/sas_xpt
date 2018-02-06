@@ -1,10 +1,9 @@
-# Inspiration for binary compare: https://sphereinc.com/testing-generated-binary-files-with-rspec/
+require "spec_helper"
 
+# For some reason this test cannot be within the spec
 module BinaryHelper
     def check_content(generated_file, correct_file)
-        # created_file_content = File.open("./spec/output/testmeta.xpt", 'rb') { |f| f.read }
         created_file_content = File.open(generated_file, 'rb') { |f| f.read }
-        # correct_file_content = File.open("./spec/support/compare_files/testmeta_correct.xpt", 'rb') { |f| f.read }
         correct_file_content = File.open(correct_file, 'rb') { |f| f.read }
         startPosition = 0
         stopPosition = 143
@@ -23,8 +22,6 @@ module BinaryHelper
         # end
     end
 end
-
-require "spec_helper"
 
 describe Xpt do
     include BinaryHelper
@@ -141,25 +138,8 @@ describe Xpt do
 
     # Compare binary content
     context "the created file " do
-        created_file_content = File.open("./spec/output/testdata.xpt", 'rb') { |f| f.read }
-        # created_file_content.close
-        correct_file_content = File.open("./spec/support/compare_files/testdata_correct.xpt", 'rb') { |f| f.read }
-        # correct_file_content.close
-        startPosition = 0
-        stopPosition = 143
-        it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' before date of creation1' do
-            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
-        end
-
-        startPosition = 176
-        stopPosition = 463
-        it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' after date of creation1 and before date of creation2' do
-            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
-        end
-        startPosition = 496
-        stopPosition = -1
-        it 'has the same binary content on position '+startPosition.to_s+'-(end) after date of creation2' do
-            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        it "binary compare should be the same (except dates)" do
+            check_content("./spec/output/testdata.xpt", "./spec/support/compare_files/testdata_correct.xpt")
         end
     end
 end
