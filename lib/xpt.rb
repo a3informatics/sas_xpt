@@ -89,14 +89,14 @@ class Xpt
     if !directoryExist? then
       result = createError(-1,"(Xpt create_meta) Output directory does not exist")
 
+    # Check if filename is not more than 8 characters
+    elsif !filenameOkForWrite? then
+      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
+
     # Check if file exist
     elsif fileExist? then
       result = createError(-2,"(Xpt create_meta) Output file already exists")
 
-    # Check if file exist
-    elsif !filenameOkForWrite? then
-      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
-    
     # Create file
     else
       result = create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
@@ -121,7 +121,7 @@ class Xpt
     return File.exist?(self.directory+self.filename)
   end
   def filenameOkForWrite?
-    return self.filename.chomp(".xpt").length > 8
+    return self.filename.chomp(".xpt").length < 9
   end
 
   def createError(errorNo, errorText)
