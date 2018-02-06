@@ -18,19 +18,24 @@
 ######################################################
 module Create_xpt_data_module
     def create_xpt_data(path,filename,ds_label,metadata,rows)
+        if filename.chomp(".xpt").length > 8 then
+            result = {}
+            result[:status] = -1
+            result[:error] = "Dataset name longer than 8 characters"
+            return result
+        end
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
         # STDERR.puts "Create "+path+filename
         file = File.new(path+filename,"wb")
 
         # Write first header
     #    firstHeader = file.read(80)
-        str = "HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000"
+        str = "HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000  "
         file.write(str)
 
         # Write REAL header info
         # #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         # sasSymbol = []
-        file.write("  ") # Don't really now what this is used for
         file.write("SAS     ")
         # sasSymbol[1] = file.read(8)
         file.write("SAS     ")
@@ -43,7 +48,6 @@ module Create_xpt_data_module
         # blanks = file.read(24)
         file.write(" "*24)
         # creationTime = file.read(16)
-    #    dt = Time.now.to_s
         dt = Time.now.strftime("%d%b%y:%H:%M:%S")
         file.write(dt)
 
@@ -59,12 +63,11 @@ module Create_xpt_data_module
         file.write("HEADER RECORD*******MEMBER  HEADER RECORD!!!!!!!000000000000000001600000000140  ")
         # #HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000
         # memDesc = file.read(80)
-        file.write("HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000")
+        file.write("HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000  ")
 
         # #Read REAL header info
         # #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         # sasSymbol = file.read(8)
-        file.write("  ")  # Don't really now what this is used for
         file.write("SAS     ")
         # dsname = file.read(8)
         file.write(filename.ljust(8))
@@ -361,6 +364,12 @@ module Create_xpt_data_module
             # STDERR.puts "Debug: pad= "+padString.length.inspect
             file.write(padString)
         end
-        return "file created"
+        result = {}
+        result[:status]=1
+        result[:message] = "File "+filename+" written"
+        result[:numberOfVariables] = metadata.size
+        result[:numberOfRows] = rows.size
+
+        return result
     end
 end

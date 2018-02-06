@@ -24,13 +24,12 @@ module Create_xpt_metadata_module
         file = File.new(path+filename,"wb")
 
         # Create header
-        str = "HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000"
+        str = "HEADER RECORD*******LIBRARY HEADER RECORD!!!!!!!000000000000000000000000000000  "
         file.write(str)
 
         # Create REAL header info
         # #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
         # sasSymbol = []
-        file.write("  ") # Don't really now what this is used for
         file.write("SAS     ")
         # sasSymbol[1] = file.read(8)
         file.write("SAS     ")
@@ -57,11 +56,10 @@ module Create_xpt_metadata_module
         file.write("HEADER RECORD*******MEMBER  HEADER RECORD!!!!!!!000000000000000001600000000140  ")
         # #HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000
         # memDesc = file.read(80)
-        file.write("HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000")
+        file.write("HEADER RECORD*******DSCRPTR HEADER RECORD!!!!!!!000000000000000000000000000000  ")
 
         # Create REAL header info
         # #aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee                        ffffffffffffffff
-        file.write("  ")  # Don't really now what this is used for
         file.write("SAS     ")  # Static it is SAS generated
         file.write(filename.chomp(".xpt").ljust(8))
         file.write("SASDATA ")  # Static header info
@@ -181,8 +179,6 @@ module Create_xpt_metadata_module
                 rowLength += 52
                 padNull = ["0".to_i].pack("n") # 16-bit unsigned
                 file.write(padNull*26) # Length of padNull is 2. 26*2 = 52
-    #            padNull = ["0".to_i].pack("C") # 8-bit unsigned
-    #            file.write(padNull*52) # Length of padNull is 52
 
                 nposLength += varLength # Set position of next variable
                 totalRowLength += rowLength # Set current row length for padding after all variables
@@ -227,7 +223,11 @@ module Create_xpt_metadata_module
             padString = " "*padLength
             file.write(padString)
         end
+        result = {}
+        result[:status] = 1
+        result[:message] = "File "+filename+" written"
+        result[:numberOfVariables] = metadata.size
 
-        return "file created"
+        return result
     end
 end
