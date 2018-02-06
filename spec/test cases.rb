@@ -82,7 +82,7 @@ metadata = [[name:"c1",label:"label c1",type:"char",length:11],
             [name:"n1",label:"label n1",type:"num",length:8]
 ]
 
-outputDirectory="../spec/support/output"
+outputDirectory="../spec/output"
 filename="testmeta"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
@@ -107,12 +107,15 @@ rows = [
         ["A file",4503599627370495]
     ]
 
-outputDirectory="../spec/support/output"
+outputDirectory="../spec/output"
 filename="testdata"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
 xpt = Xpt.new(outputDirectory,filename)
 cres = xpt.create_data("dataset label",metadata,rows)
 
-puts "Created file: "+outputDirectory+" - "+filename+".xpt"
-puts "cres="+cres.to_s
+if cres[:status] == 1 then
+  puts "Created file: "+outputDirectory+" - "+filename+".xpt"
+else
+  puts "error: "+cres[:error].to_s
+end
