@@ -114,6 +114,8 @@ puts "Set output directory and filename: "+outputDirectory+"-"+filename
 xpt = Xpt.new(outputDirectory,filename)
 cres = xpt.create_data("dataset label",metadata,rows)
 
-puts "Created file: "+outputDirectory+" - "+filename+".xpt"
-puts "cres="+cres.to_s
-
+if cres[:status] == 1 then
+  puts "Created file: "+outputDirectory+" - "+filename+".xpt"
+else
+  puts "error: "+cres[:error].to_s
+end
