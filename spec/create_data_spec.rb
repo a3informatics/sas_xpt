@@ -1,7 +1,34 @@
+# Inspiration for binary compare: https://sphereinc.com/testing-generated-binary-files-with-rspec/
+
+module BinaryHelper
+    def check_content(generated_file, correct_file)
+        # created_file_content = File.open("./spec/output/testmeta.xpt", 'rb') { |f| f.read }
+        created_file_content = File.open(generated_file, 'rb') { |f| f.read }
+        # correct_file_content = File.open("./spec/support/compare_files/testmeta_correct.xpt", 'rb') { |f| f.read }
+        correct_file_content = File.open(correct_file, 'rb') { |f| f.read }
+        startPosition = 0
+        stopPosition = 143
+        # it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' before date of creation1' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+        startPosition = 176
+        stopPosition = 463
+        # it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' after date of creation1 and before date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+        startPosition = 496
+        stopPosition = -1
+        # it 'has the same binary content on position '+startPosition.to_s+'-(end) after date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        # end
+    end
+end
+
 require "spec_helper"
 
 describe Xpt do
-  
+    include BinaryHelper
+
     context "expect gem to create xpt file with metadata and data ------------------------" do
         it 'as specified' do
         end
@@ -76,8 +103,8 @@ describe Xpt do
         end
     end
 
-    # Creates file with metadata
-    context "when creating a file with metadata" do
+    # Creates file with data
+    context "when creating a file with data (metadata+rows)" do
         outputDirectory="./spec/output"
         theDomain="testdata"
         xpt = Xpt.new(outputDirectory,theDomain)
@@ -109,6 +136,30 @@ describe Xpt do
         end
         it 'and the file exists' do
             expect(File.exist?(xpt.directory+xpt.filename)).to eq(true)
+        end
+    end
+
+    # Compare binary content
+    context "the created file " do
+        created_file_content = File.open("./spec/output/testdata.xpt", 'rb') { |f| f.read }
+        # created_file_content.close
+        correct_file_content = File.open("./spec/support/compare_files/testdata_correct.xpt", 'rb') { |f| f.read }
+        # correct_file_content.close
+        startPosition = 0
+        stopPosition = 143
+        it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' before date of creation1' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        end
+
+        startPosition = 176
+        stopPosition = 463
+        it 'has the same binary content on position '+startPosition.to_s+"-"+stopPosition.to_s+' after date of creation1 and before date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
+        end
+        startPosition = 496
+        stopPosition = -1
+        it 'has the same binary content on position '+startPosition.to_s+'-(end) after date of creation2' do
+            expect(created_file_content[startPosition..stopPosition]).to eq(correct_file_content[startPosition..stopPosition])
         end
     end
 end
