@@ -64,7 +64,7 @@ module Create_xpt_data_module
         # sasSymbol = file.read(8)
         file.write("SAS     ")
         # dsname = file.read(8)
-        file.write(filename.ljust(8))
+        file.write(filename.chomp(".xpt").ljust(8))
         # sasdata = file.read(8)
         file.write("SASDATA ")
         # sasVer = file.read(8)
