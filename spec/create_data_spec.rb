@@ -112,10 +112,11 @@ describe Xpt do
         ]
         rows = [
             ["xpt.rb!",1.1],
-            ["Only",0.1],
-            ["Character",0.1],
+            ["Only",0],
+            ["Character",-0.0],
             ["Content",-0.1],
-            ["Allowed 01",4503599627370495]
+            ["Allowed 01",4503599627370495],
+            ["23 here",-4503599627370495]
         ]
         it 'sets input directory '+outputDirectory do
             expect(xpt.directory).to eq(outputDirectory+"/")
