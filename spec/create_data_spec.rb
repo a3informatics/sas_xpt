@@ -107,13 +107,15 @@ describe Xpt do
         xpt = Xpt.new(outputDirectory,theDomain)
 
         metadata = [
-            [name:"Char_11",label:"Label Char11",type:"char",length:11],
-            [name:"Num1",label:"Label N1",type:"num",length:8]
+            {name:"Char_11",label:"Label Char11",type:"char",length:11},
+            {name:"Num1",label:"Label N1",type:"num",length:8}
         ]
         rows = [
             ["xpt.rb!",1.1],
-            ["A file",1.1],
-            ["A file",4503599627370495]
+            ["Only",0.1],
+            ["Character",0.1],
+            ["Content",-0.1],
+            ["Allowed 01",4503599627370495]
         ]
         it 'sets input directory '+outputDirectory do
             expect(xpt.directory).to eq(outputDirectory+"/")

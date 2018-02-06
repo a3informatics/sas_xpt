@@ -103,8 +103,8 @@ describe Xpt do
         theDomain="testmeta"
         xpt = Xpt.new(outputDirectory,theDomain)
 
-        metadata = [[name:"Char_11",label:"Label Char11",type:"char",length:11],
-                    [name:"Num1",label:"Label N1",type:"num",length:8]
+        metadata = [{name:"Char_11",label:"Label Char11",type:"char",length:11},
+                    {name:"Num1",label:"Label N1",type:"num",length:8}
         ]
 
         it 'sets input directory '+outputDirectory do
