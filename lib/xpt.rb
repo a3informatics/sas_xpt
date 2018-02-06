@@ -105,10 +105,21 @@ class Xpt
   end
 
   def create_data(datasetLabel,metadata,realdata)
-    STDERR.puts( "Create XPT file with data!" )
-    # create_xpt_data(self.directory,self.filename,self.datasetLabel, self.metadata,self.realdata)
-    result = create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
-    STDERR.puts "==== File is created ===="
+    if !directoryExist? then
+      result = createError(-1,"(Xpt create_meta) Output directory does not exist")
+
+    # Check if filename is not more than 8 characters
+    elsif !filenameOkForWrite? then
+      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
+
+    # Check if file exist
+    elsif fileExist? then
+      result = createError(-2,"(Xpt create_meta) Output file already exists")
+
+    # Create file
+    else
+      result = create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
+    end
     return result
   end
 
