@@ -96,7 +96,7 @@ module Create_xpt_metadata_module
 
                 # Create type
                 rowLength += 2
-                if (varmeta.first[:type] == "char") then
+                if (varmeta[:type] == "char") then
                     type = [2].pack("n*")
                 else
                     type = [1].pack("n*")
@@ -110,7 +110,7 @@ module Create_xpt_metadata_module
 
                 # Length of variable
                 rowLength += 2
-                varLength = varmeta.first[:length]
+                varLength = varmeta[:length]
                 length = [varLength.to_i].pack("n*")
                 file.write(length)
 
@@ -121,20 +121,20 @@ module Create_xpt_metadata_module
 
                 # Name
                 rowLength += 8
-                file.write(varmeta.first[:name].upcase.ljust(8))
+                file.write(varmeta[:name].upcase.ljust(8))
 
                 # Label
                 rowLength += 40
-                file.write(varmeta.first[:label].ljust(40))
+                file.write(varmeta[:label].ljust(40))
 
-                # FormatName  (static)
+                # FormatName  (static
                 rowLength += 8
                 formatName = ""
                 file.write(formatName.ljust(8))
 
                 # FormatLength  (static)
                 rowLength += 2
-                formatLength = [0.to_i].pack("n*")
+                formatLength = [0].pack("n*")
                 file.write(formatLength)
 
                 # Decimal format  (static)
@@ -200,15 +200,15 @@ module Create_xpt_metadata_module
 
         # Pad each variable
         metadata.each do |varmeta|
-            if (varmeta.first[:type] == "char") then
-                padString = " "*varmeta.first[:length]
+            if (varmeta[:type] == "char") then
+                padString = " "*varmeta[:length]
                 file.write(padString)
             else
                 padNull = ["0".to_i].pack("C") # 8-bit unsigned
                 padString = "."+padNull*7 # Target 0101110+00000000000000000000000000000000000000000000000000000000
                 file.write(padString)
             end
-            totalRowLength += varmeta.first[:length] # Set current row length for padding after all variables
+            totalRowLength += varmeta[:length] # Set current row length for padding after all variables
         end
 
         # Pad last time make it a 80 bit chunk
