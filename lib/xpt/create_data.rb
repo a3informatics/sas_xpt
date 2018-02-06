@@ -222,8 +222,7 @@ module Create_xpt_data_module
         missingNumeric = "."+padNull*7 # Target 0101110+00000000000000000000000000000000000000000000000000000000
         # Create zero numeric value
         padNull = ["0".to_i].pack("C") # 8-bit unsigned
-        zeroValue = padNull*0 # Target 0000000+00000000000000000000000000000000000000000000000000000000
-
+        zeroValue = padNull*8 # Target 0000000+00000000000000000000000000000000000000000000000000000000
 
         theVariables = metadata.collect {|it| it[:name] }
         varLengths   = metadata.collect {|it| it[:length] }
