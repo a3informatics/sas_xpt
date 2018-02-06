@@ -107,7 +107,7 @@ module Create_xpt_data_module
 
                 #     type         = file.read(shortByte).unpack("n")[0]
                 rowLength += 2
-                if (varmeta.first[:type] == "char") then
+                if (varmeta[:type] == "char") then
                     type = [2].pack("n*")
                 else
                     type = [1].pack("n*")
@@ -120,7 +120,7 @@ module Create_xpt_data_module
 
                 #     length       = file.read(shortByte).unpack("n")[0]
                 rowLength += 2
-                varLength = varmeta.first[:length]
+                varLength = varmeta[:length]
                 length = [varLength.to_i].pack("n*")
                 file.write(length)
 
@@ -131,11 +131,11 @@ module Create_xpt_data_module
 
                 # name         = file.read(8)
                 rowLength += 8
-                file.write(varmeta.first[:name].upcase.ljust(8))
+                file.write(varmeta[:name].upcase.ljust(8))
 
                 # label        = file.read(40)
                 rowLength += 40
-                file.write(varmeta.first[:label].ljust(40))
+                file.write(varmeta[:label].ljust(40))
 
                 # formatName   = file.read(8)
                 rowLength += 8
@@ -225,9 +225,9 @@ module Create_xpt_data_module
         zeroValue = padNull*0 # Target 0000000+00000000000000000000000000000000000000000000000000000000
 
 
-        theVariables = metadata.collect {|it| it[0][:name] }
-        varLengths   = metadata.collect {|it| it[0][:length] }
-        varTypes     = metadata.collect {|it| it[0][:type] }
+        theVariables = metadata.collect {|it| it[:name] }
+        varLengths   = metadata.collect {|it| it[:length] }
+        varTypes     = metadata.collect {|it| it[:type] }
         rows.each do |row|
             row.each_with_index do |value, index |
                 # STDERR.puts "Debug metadata "+index.to_s+":"+varLengths[index].inspect
