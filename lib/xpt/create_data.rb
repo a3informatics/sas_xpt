@@ -18,12 +18,6 @@
 ######################################################
 module Create_xpt_data_module
     def create_xpt_data(path,filename,ds_label,metadata,rows)
-        if filename.chomp(".xpt").length > 8 then
-            result = {}
-            result[:status] = -1
-            result[:error] = "Dataset name longer than 8 characters"
-            return result
-        end
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
         # STDERR.puts "Create "+path+filename
         file = File.new(path+filename,"wb")

@@ -1,4 +1,4 @@
-######################################################
+######################################################################################
 # Xpt main
 #-----------------------------------------------------
 # Input: path to file to create
@@ -10,9 +10,11 @@
 # Output: See respective method
 #-----------------------------------------------------
 # Known limitations:
-# - Make two xpt classes? Read and Write?
-# - Where to check whether a file exists before writing?
-######################################################
+# - Read/Write: Make two xpt classes? Read and Write?
+# - Write: Where to check whether a file exists before writing?
+# - Write: Where to check lenght of filename? xpt format only allows 8 char in file
+#          Or should we skip this check and truncate to 8 char in file?
+#####################################################################################
 require "xpt/read_data"
 require "xpt/read_meta"
 require "xpt/read_supp_meta"
@@ -84,10 +86,21 @@ class Xpt
   end
 
   def create_meta(datasetLabel,metadata)
+    if !directoryExist? then
+      result = createError(-1,"(Xpt create_meta) Output directory does not exist")
+
     # Check if file exist
-    STDERR.puts( "Create XPT file with metadata!")
-    result = create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
-    STDERR.puts "==== File is created ===="
+    elsif fileExist? then
+      result = createError(-2,"(Xpt create_meta) Output file already exists")
+
+    # Check if file exist
+    elsif !filenameOkForWrite? then
+      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
+    
+    # Create file
+    else
+      result = create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
+    end
     return result
   end
 
@@ -97,6 +110,18 @@ class Xpt
     result = create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
     STDERR.puts "==== File is created ===="
     return result
+  end
+
+  private
+
+  def directoryExist?
+    return File.exist?(self.directory)
+  end
+  def fileExist?
+    return File.exist?(self.directory+self.filename)
+  end
+  def filenameOkForWrite?
+    return self.filename.chomp(".xpt").length > 8
   end
 
   def createError(errorNo, errorText)

@@ -15,9 +15,6 @@
 ######################################################
 module Create_xpt_metadata_module
     def create_xpt_metadata(path,filename,ds_label,metadata)
-        if filename.chomp(".xpt").length > 8 then
-            return "---------- Dataset name longer than 8 characters ---------"
-        end
         path = File.join(path,"") # This just makes sure that the path always ends with "/"
         # STDERR.puts "Create "+path+filename
 
