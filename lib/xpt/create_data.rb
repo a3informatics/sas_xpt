@@ -358,6 +358,8 @@ module Create_xpt_data_module
             # STDERR.puts "Debug: pad= "+padString.length.inspect
             file.write(padString)
         end
+        # Close file to be sure
+        file.close
         result = {}
         result[:status]=1
         result[:message] = "File "+filename+" written"

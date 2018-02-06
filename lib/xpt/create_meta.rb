@@ -220,6 +220,8 @@ module Create_xpt_metadata_module
             padString = " "*padLength
             file.write(padString)
         end
+        # Close file to be sure
+        file.close
         result = {}
         result[:status] = 1
         result[:message] = "File "+filename+" written"
