@@ -78,11 +78,11 @@ end
 # Test for creating metadata only
 ###################################################
 puts "Creating metadata only"
-metadata = [[name:"c1",label:"label c1",type:"char",length:11],
-            [name:"n1",label:"label n1",type:"num",length:8]
+metadata = [{name:"var1",label:"Label var1",type:"char",length:11},
+            {name:"var2",label:"Label var2",type:"num",length:8}
 ]
 
-outputDirectory="../spec/output"
+outputDirectory="../output"
 filename="testmeta"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
@@ -98,16 +98,15 @@ puts "cres="+cres.to_s
 # Test for creating real data
 ###################################################
 puts "Creating data"
-metadata = [[name:"c1",label:"lc 1",type:"char",length:11],
-            [name:"n1",label:"ln 1",type:"num",length:8]
+metadata = [{name:"c1",label:"lc 1",type:"char",length:11},
+            {name:"n1",label:"ln 1",type:"num",length:8}
 ]
-rows = [
-        ["xpt.rb!",1.1],
-        ["A file",1.1],
-        ["A file",4503599627370495]
+rows = [["xpt.rb!",1.1],
+        ["Anything",-0.1],
+        ["character",4503599627370495]
     ]
 
-outputDirectory="../spec/output"
+outputDirectory="../output"
 filename="testdata"
 puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
