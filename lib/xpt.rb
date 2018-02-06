@@ -29,9 +29,9 @@ class Xpt
   include Read_xpt_metadata_module
   include Read_xpt_supp_metadata_module
 
-  def initialize(aPath, aDomain)
-    @directory = File.join(aPath,"") # This makes sure that the directory always ends with "/"
-    @filename = aDomain+".xpt"
+  def initialize(inputDirectory, inputFilename)
+    @directory = File.join(inputDirectory,"") # This makes sure that the directory always ends with "/"
+    @filename = inputFilename+".xpt"
     return self
   end
 
