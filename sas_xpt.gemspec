@@ -1,7 +1,8 @@
 Gem::Specification.new do |s|
-  s.name               = "Xpt"
-  s.version            = "0.2.2"
-  s.default_executable = "Xpt"
+  s.name               = "sas_xpt"
+  s.version            = "0.2.3"
+  # s.default_executable = "sas_xpt"
+  # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Johannes Ulander"]
