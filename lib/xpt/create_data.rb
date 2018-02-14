@@ -361,7 +361,7 @@ module Create_xpt_data_module
         file.close
         result = {}
         result[:status]=1
-        result[:message] = "File "+filename+" written"
+        result[:message] = "File "+filename+" created"
         result[:numberOfVariables] = metadata.size
         result[:numberOfRows] = rows.size
 

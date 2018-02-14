@@ -78,7 +78,7 @@ describe Xpt do
     end
 
     # Reports error if filename is longer than 8 characters
-    context "when setting file name longer than 8 characters" do
+    context "when setting file name longer than 8 characters and passes parameter to check filename for submision readiness" do
         outputDirectory="./spec/output"
         theDomain="testdata1"
         xpt = Xpt.new(outputDirectory,theDomain)
@@ -92,7 +92,7 @@ describe Xpt do
             expect(xpt.filename).to eq(theDomain+".xpt")
         end
         it 'reports error that file name is too long' do
-            result = xpt.create_data("Dataset label",metadata,rows)
+            result = xpt.create_data("Dataset label",metadata,rows, true, true)
             expect(result[:status]).to eq(-101)
         end
         it 'and the filename is too long. Size: '+xpt.filename.chomp(".xpt").size.to_s do

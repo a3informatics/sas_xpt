@@ -88,7 +88,9 @@ puts "Set output directory and filename: "+outputDirectory+"-"+filename
 
 xpt = Xpt.new(outputDirectory,filename)
 
-cres = xpt.create_meta("dataset label",metadata)
+#cres = xpt.create_meta("dataset label",metadata)  # Check if file exist
+cres = xpt.create_meta("dataset label",metadata, true) # Overwrite
+#cres = xpt.create_meta("dataset label",metadata, true, true) # Check submission readiness
 
 puts "Created file: "+outputDirectory+" - "+filename+".xpt"
 puts "cres="+cres.to_s

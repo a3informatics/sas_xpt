@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name               = "sas_xpt"
-  s.version            = "0.2.3"
+  s.version            = "0.2.4"
   # s.default_executable = "sas_xpt"
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
 

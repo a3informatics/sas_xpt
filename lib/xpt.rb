@@ -85,42 +85,45 @@ class Xpt
     return result
   end
 
-  def create_meta(datasetLabel,metadata)
-    if !directoryExist? then
-      result = createError(-1,"(Xpt create_meta) Output directory does not exist")
-
-    # Check if filename is not more than 8 characters
-    elsif !filenameOkForWrite? then
-      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
-
-    # Check if file exist
-    elsif fileExist? then
-      result = createError(-2,"(Xpt create_meta) Output file already exists")
-
-    # Create file
-    else
-      result = create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
+  def create_meta(datasetLabel,metadata, overwrite = false, submissionConstraint = false)
+    if submissionConstraint && !submissionFilenameOK? then
+        return createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
     end
-    return result
+    if overwrite then
+      return create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
+    else
+      if !directoryExist? then
+        return createError(-1,"(Xpt create_meta) Output directory does not exist")
+
+      # Check if file exist
+      elsif fileExist? then
+        return createError(-2,"(Xpt create_meta) Output file already exists")
+
+      # Create file
+      else
+        return create_xpt_metadata(self.directory,self.filename,datasetLabel,metadata)
+      end
+    end
   end
 
-  def create_data(datasetLabel,metadata,realdata)
-    if !directoryExist? then
-      result = createError(-1,"(Xpt create_meta) Output directory does not exist")
-
-    # Check if filename is not more than 8 characters
-    elsif !filenameOkForWrite? then
-      result = createError(-101,"(Xpt create_meta) Output filename longer than 8 characters")
-
-    # Check if file exist
-    elsif fileExist? then
-      result = createError(-2,"(Xpt create_meta) Output file already exists")
-
-    # Create file
-    else
-      result = create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
+  def create_data(datasetLabel,metadata,realdata, overwrite = false, submissionConstraint = false)
+    if submissionConstraint && !submissionFilenameOK? then
+        return createError(-101,"(Xpt create_data) Output filename longer than 8 characters")
     end
-    return result
+    if overwrite then
+      return create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
+    else
+      if !directoryExist? then
+        return createError(-1,"(Xpt create_data) Output directory does not exist")
+
+      # Check if file exist
+      elsif fileExist? then
+        return createError(-2,"(Xpt create_data) Output file already exists")
+      # Create file
+      else
+        return create_xpt_data(self.directory,self.filename,datasetLabel,metadata,realdata)
+      end
+    end
   end
 
   private
@@ -131,7 +134,7 @@ class Xpt
   def fileExist?
     return File.exist?(self.directory+self.filename)
   end
-  def filenameOkForWrite?
+  def submissionFilenameOK?
     return self.filename.chomp(".xpt").length < 9
   end
 
@@ -142,3 +145,4 @@ class Xpt
     return result
   end
 end
+
